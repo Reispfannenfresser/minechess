@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://b50yadlqq03vl"]
+
+[ext_resource type="Texture2D" uid="uid://c43u7rygyucbm" path="res://sprites/explosion.png" id="1_17npe"]
+[ext_resource type="Script" uid="uid://bvrolw0lrl8q0" path="res://scenes/explosion.gd" id="2_nfeox"]
+[ext_resource type="AudioStream" uid="uid://3xehfi1g6jvr" path="res://sounds/explosion.wav" id="3_aw4cw"]
+
+[node name="Explosion" type="CPUParticles2D"]
+z_index = 1
+emitting = false
+amount = 48
+texture = ExtResource("1_17npe")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.5
+randomness = 1.0
+lifetime_randomness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(256, 256)
+spread = 180.0
+gravity = Vector2(0, 0)
+angular_velocity_max = 360.0
+angle_max = 360.0
+color = Color(0, 0.7490196, 0.7490196, 1)
+script = ExtResource("2_nfeox")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_aw4cw")
+autoplay = true

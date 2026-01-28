@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ColorTheme" load_steps=2 format=3 uid="uid://cmks6820aado4"]
+
+[ext_resource type="Script" uid="uid://ciyuk61mf822" path="res://resources/color_theme.gd" id="1_5gnqj"]
+
+[resource]
+script = ExtResource("1_5gnqj")
+indicator_color = Color(0, 0.7490196, 0.7490196, 1)
+white_figure_color = Color(1, 1, 1, 1)
+white_board_color = Color(0.5019608, 0.39607844, 0.2509804, 1)
+black_board_color = Color(0.4, 0.31764707, 0.2, 1)
+metadata/_custom_type_script = "uid://ciyuk61mf822"

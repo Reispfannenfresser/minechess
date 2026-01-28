@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="Figureset" load_steps=19 format=3 uid="uid://bhosbwlt1byfu"]
+
+[ext_resource type="Texture2D" uid="uid://chp3qi423cv1g" path="res://sprites/figure_bishop.png" id="1_6ff4l"]
+[ext_resource type="Texture2D" uid="uid://u00o4llpmjhu" path="res://sprites/indicator_capture.png" id="2_l2g3h"]
+[ext_resource type="Texture2D" uid="uid://csq70ap6p1n14" path="res://sprites/figure_king.png" id="2_ln8f4"]
+[ext_resource type="Texture2D" uid="uid://basgulv2qynkc" path="res://sprites/figure_knight.png" id="3_l2g3h"]
+[ext_resource type="Texture2D" uid="uid://cjuxs57woe02f" path="res://sprites/mine_count__one.png" id="4_vnoir"]
+[ext_resource type="Texture2D" uid="uid://djw3xclrn42mq" path="res://sprites/mine_count__two.png" id="5_qgn1c"]
+[ext_resource type="Texture2D" uid="uid://da0yngkbpsd4o" path="res://sprites/mine_count__three.png" id="6_1ukfr"]
+[ext_resource type="Texture2D" uid="uid://dwp3k2lvheh38" path="res://sprites/mine_count__four.png" id="7_aqt4g"]
+[ext_resource type="Texture2D" uid="uid://cpff36qh74poo" path="res://sprites/mine_count__five.png" id="8_e0lkp"]
+[ext_resource type="Texture2D" uid="uid://dvwu1wju35te7" path="res://sprites/mine_count__six.png" id="9_v6w1l"]
+[ext_resource type="Texture2D" uid="uid://bse7jo0k4r6sf" path="res://sprites/mine_count__seven.png" id="10_6dg4x"]
+[ext_resource type="Texture2D" uid="uid://tpra6wxwtuqg" path="res://sprites/mine_count__eight.png" id="11_onlym"]
+[ext_resource type="Texture2D" uid="uid://d0n4een6hke0q" path="res://sprites/indicator_move.png" id="12_fkhf2"]
+[ext_resource type="Texture2D" uid="uid://00rjhh6c4ymx" path="res://sprites/figure_pawn.png" id="13_8t5bg"]
+[ext_resource type="Texture2D" uid="uid://5iafexkxurhw" path="res://sprites/figure_queen.png" id="14_wfoi6"]
+[ext_resource type="Texture2D" uid="uid://bo0164vfcwtou" path="res://sprites/figure_rook.png" id="15_wwnyq"]
+[ext_resource type="Script" uid="uid://dgbvwbp8nrysw" path="res://resources/iconset.gd" id="16_muke8"]
+[ext_resource type="Texture2D" uid="uid://c2s4ldf3l5n4" path="res://sprites/indicator_select.png" id="17_p63g5"]
+
+[resource]
+script = ExtResource("16_muke8")
+pawn = ExtResource("13_8t5bg")
+rook = ExtResource("15_wwnyq")
+knight = ExtResource("3_l2g3h")
+bishop = ExtResource("1_6ff4l")
+queen = ExtResource("14_wfoi6")
+king = ExtResource("2_ln8f4")
+mine_1 = ExtResource("4_vnoir")
+mine_2 = ExtResource("5_qgn1c")
+mine_3 = ExtResource("6_1ukfr")
+mine_4 = ExtResource("7_aqt4g")
+mine_5 = ExtResource("8_e0lkp")
+mine_6 = ExtResource("9_v6w1l")
+mine_7 = ExtResource("10_6dg4x")
+mine_8 = ExtResource("11_onlym")
+select = ExtResource("17_p63g5")
+capture = ExtResource("2_l2g3h")
+move = ExtResource("12_fkhf2")
+metadata/_custom_type_script = "uid://dgbvwbp8nrysw"

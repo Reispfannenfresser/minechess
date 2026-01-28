@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0lnmhlx5kxru"]
+
+[ext_resource type="Script" uid="uid://dgq77x3r34idx" path="res://scenes/info_screen.gd" id="1_y3ykm"]
+
+[node name="InfoScreen" type="Panel" node_paths=PackedStringArray("_hint", "close_button")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_y3ykm")
+_hint = NodePath("VBoxContainer/Label")
+close_button = NodePath("VBoxContainer/HBoxContainer/CloseButton")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "The window will be closed
+when you press the button"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="CloseButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "Close"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]

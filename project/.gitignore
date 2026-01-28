@@ -1,0 +1,18 @@
+# Godot 4+ specific ignores
+.godot/
+
+# vscode specific ignores
+/.vscode/
+
+# outdated csproj files
+/**.csproj.old.**
+
+# compiled libraries
+/bin/**.so
+/bin/**.dll
+/bin/**.wasm
+/build/
+**.kra
+**.kra~
+**.png~
+**.svg~

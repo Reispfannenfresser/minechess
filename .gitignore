@@ -1,0 +1,6 @@
+# Project specific ignores
+.sconsign.dblite
+/.[Cc]ache/
+*.old
+.vscode/
+compile_commands.json
