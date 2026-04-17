@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://crk4d34lx8ik2" path="res://scenes/chess_tile.gd" id="1_01kk7"]
 [ext_resource type="Texture2D" uid="uid://nl4ah0m11pta" path="res://sprites/board.png" id="3_0bkhy"]
 
-[node name="ChessTile" type="Control" node_paths=PackedStringArray("board_texture", "figure_texture", "indicator_texture", "mine_count_texture")]
+[node name="ChessTile" type="Control" node_paths=PackedStringArray("board_texture", "figure_texture", "shadow_texture", "indicator_texture", "mine_count_texture")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,6 +17,7 @@ size_flags_vertical = 3
 script = ExtResource("1_01kk7")
 board_texture = NodePath("Board")
 figure_texture = NodePath("Figure")
+shadow_texture = NodePath("Figure/Shadow")
 indicator_texture = NodePath("Indicator")
 mine_count_texture = NodePath("MineCount")
 
@@ -32,6 +33,18 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Figure" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Shadow" type="TextureRect" parent="Figure"]
+self_modulate = Color(0.48235294, 1, 1, 1)
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -72,4 +85,6 @@ focus_mode = 0
 action_mode = 0
 flat = true
 
+[connection signal="button_down" from="Button" to="." method="_on_button_down"]
+[connection signal="button_up" from="Button" to="." method="_on_button_up"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

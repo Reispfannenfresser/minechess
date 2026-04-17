@@ -22,20 +22,20 @@ static func create(chess_position: MineChessPosition, tile: ChessTile, is_large:
 		if (chess_position.rank != MineChessPosition.RANK_8):
 			min_corner.y -= tile.size.y	
 	
-	var explosion_size = max_corner - min_corner
-	var volume = explosion_size.x * explosion_size.y
-	var tile_volume = tile.size.x * tile.size.y
-	explosion.amount *= volume/tile_volume
+	var explosion_size: Vector2 = max_corner - min_corner
+	var volume: float = explosion_size.x * explosion_size.y
+	var tile_volume: float = tile.size.x * tile.size.y
+	explosion.amount = int(explosion.amount * volume / tile_volume)
 	explosion.position = min_corner + explosion_size / 2
 	explosion.emission_rect_extents = explosion_size / 2
 	explosion.emitting = true
-	var texture_size = explosion.texture.get_size()
-	var tile_size = tile.size
+	var texture_size: Vector2 = explosion.texture.get_size()
+	var tile_size: Vector2 = tile.size
 	explosion.scale_amount_min *= tile_size.x / 2 / texture_size.x
 	explosion.scale_amount_max = explosion.scale_amount_min
 	return explosion
 
-func _process(delta):
+func _process(delta: float)-> void:
 	time-=delta;
 	if (time < 0):
 		queue_free()

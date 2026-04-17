@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d0lnmhlx5kxru"]
 
-[ext_resource type="Script" uid="uid://dgq77x3r34idx" path="res://scenes/info_screen.gd" id="1_y3ykm"]
+[ext_resource type="Script" uid="uid://dgq77x3r34idx" path="res://scenes/screens/info_screen.gd" id="1_y3ykm"]
 
 [node name="InfoScreen" type="Panel" node_paths=PackedStringArray("_hint", "close_button")]
 anchors_preset = 15

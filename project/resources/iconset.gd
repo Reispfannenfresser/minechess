@@ -4,15 +4,27 @@ class_name Figureset
 @export
 var pawn: Texture2D
 @export
+var pawn_shadow: Texture2D
+@export
 var rook: Texture2D
+@export
+var rook_shadow: Texture2D
 @export
 var knight: Texture2D
 @export
+var knight_shadow: Texture2D
+@export
 var bishop: Texture2D
+@export
+var bishop_shadow: Texture2D
 @export
 var queen: Texture2D
 @export
+var queen_shadow: Texture2D
+@export
 var king: Texture2D
+@export
+var king_shadow: Texture2D
 
 @export
 var mine_1: Texture2D

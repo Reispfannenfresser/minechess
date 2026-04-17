@@ -8,27 +8,38 @@ var board_texture: TextureRect
 
 @export
 var figure_texture: TextureRect
+@export
+var shadow_texture: TextureRect
 
 @export
-var indicator_texture: TextureRect 
+var indicator_texture: TextureRect
 
 @export
 var mine_count_texture: TextureRect
 
 var figure: MineChessFigure = null
 
-var movement_possible: bool = false
+var _is_movement_target: bool = false
+var _can_move: bool = false
 
 var _board: ChessBoard
 
 var _chess_position: MineChessPosition
 
-var _is_in_check = false
+var _is_in_check: bool = false
 
-signal tile_selected(tile: ChessTile)
+var _is_holding: bool = false
+var _is_dragging: bool = false
+var _hold_duration: float = 0
+
+signal tile_clicked(tile: ChessTile)
+
+signal tile_dragged(tile: ChessTile)
+
+signal tile_dropped(tile: ChessTile, to: MineChessPosition)
 
 static func create(board: ChessBoard, chess_position: MineChessPosition)-> ChessTile:
-	var new_tile = self_scene.instantiate()
+	var new_tile: ChessTile = self_scene.instantiate()
 	new_tile._chess_position = chess_position;
 	new_tile._board = board;
 	if ((chess_position.file + chess_position.rank) % 2 == 0):
@@ -36,53 +47,76 @@ static func create(board: ChessBoard, chess_position: MineChessPosition)-> Chess
 	else:
 		new_tile.board_texture.self_modulate = board.color_theme.white_board_color
 	new_tile.indicator_texture.self_modulate = board.color_theme.indicator_color
+	new_tile.shadow_texture.self_modulate = board.color_theme.indicator_color
+	new_tile.shadow_texture.visible = false
 	new_tile.mine_count_texture.self_modulate = board.color_theme.indicator_color
 	return new_tile
 
-func select():
+func select()-> void:
 	indicator_texture.texture = _board.iconset.select
 
-func unselect():
-	indicator_texture.texture = null
+func unselect()-> void:
+	if(_is_in_check):
+		indicator_texture.texture = _board.iconset.capture
+	else:
+		indicator_texture.texture = null
 
-func show_movement_indicator():
-	movement_possible = true
+func show_movement_indicator()-> void:
+	_is_movement_target = true
 	if figure_texture.texture == null:
 		indicator_texture.texture = _board.iconset.move
 	else:
 		indicator_texture.texture = _board.iconset.capture
 
-func hide_movement_indicator():
-	movement_possible = false
-	indicator_texture.texture = _board.iconset.move
+func hide_movement_indicator()-> void:
+	_is_movement_target = false
+	indicator_texture.texture = null
+
+func is_movement_target()-> bool:
+	return _is_movement_target
+
+func can_move()-> bool:
+	return _can_move
+
+func allow_movement()-> void:
+	_can_move = true
+
+func disallow_movement()-> void:
+	_can_move = false
 
 func get_chess_position()-> MineChessPosition:
 	return _chess_position
 
-func set_figure(p_figure: MineChessFigure):
+func set_figure(p_figure: MineChessFigure)-> void:
 	figure = p_figure
 	if(figure == null):
 		figure_texture.texture = null
 		return
-	
+
 	if (figure.color == MineChessFigure.WHITE):
 		figure_texture.self_modulate = _board.color_theme.white_figure_color
 	else:
-		figure_texture.self_modulate = _board.color_theme.black_figure_color	
-	
+		figure_texture.self_modulate = _board.color_theme.black_figure_color
+
 	match figure.figure_type:
 		MineChessFigure.PAWN:
 			figure_texture.texture = _board.iconset.pawn
+			shadow_texture.texture = _board.iconset.pawn_shadow
 		MineChessFigure.ROOK:
 			figure_texture.texture = _board.iconset.rook
+			shadow_texture.texture = _board.iconset.rook_shadow
 		MineChessFigure.KNIGHT:
 			figure_texture.texture = _board.iconset.knight
+			shadow_texture.texture = _board.iconset.knight_shadow
 		MineChessFigure.BISHOP:
 			figure_texture.texture = _board.iconset.bishop
+			shadow_texture.texture = _board.iconset.bishop_shadow
 		MineChessFigure.QUEEN:
 			figure_texture.texture = _board.iconset.queen
+			shadow_texture.texture = _board.iconset.queen_shadow
 		MineChessFigure.KING:
 			figure_texture.texture = _board.iconset.king
+			shadow_texture.texture = _board.iconset.king_shadow
 	match figure.mine_count:
 		0:
 			mine_count_texture.texture = null
@@ -103,17 +137,55 @@ func set_figure(p_figure: MineChessFigure):
 		8:
 			mine_count_texture.texture=_board.iconset.mine_8
 
-func set_in_check():
+func set_in_check()-> void:
 	_is_in_check = true
 	indicator_texture.texture = _board.iconset.capture
 
-func clear():
+func clear()-> void:
 	figure = null
-	movement_possible = false
+	_can_move = false
 	figure_texture.texture = null
 	indicator_texture.texture = null
 	mine_count_texture.texture = null
 	_is_in_check = false
 
-func _on_button_pressed():
-	emit_signal("tile_selected", self)
+func _on_button_down()-> void:
+	if(!_can_move):
+		tile_clicked.emit(self)
+		return
+	_hold_duration = 0
+	_is_holding = true
+
+func _on_button_up()-> void:
+	if(_can_move):
+		if(_is_dragging):
+			var offset: Vector2 = figure_texture.global_position - board_texture.global_position
+			offset = round(offset / figure_texture.size)
+			offset.y *= -1
+			shadow_texture.visible = false;
+			var drop_position: Vector2i = Vector2i(_chess_position.file + int(offset.x), _chess_position.rank + int(offset.y))
+			if(drop_position.x >= 0 && drop_position.x <= 7 && drop_position.y >= 0 && drop_position.y <= 7):
+				tile_dropped.emit(self, MineChessPosition.create(drop_position.x, drop_position.y))
+			else:
+				tile_dropped.emit(self, null)
+		else:
+			tile_clicked.emit(self)
+
+	_is_holding = false
+	_is_dragging = false
+	figure_texture.top_level = false
+
+func _process(delta: float)-> void:
+	if(_is_holding):
+		if(!_is_dragging && _hold_duration >= 0.1):
+			_is_dragging = true
+			figure_texture.top_level = true
+			tile_dragged.emit(self)
+			shadow_texture.visible = true;
+
+		if(_is_dragging):
+			figure_texture.position = get_global_mouse_position() - (figure_texture.size * 0.5)
+
+		_hold_duration += delta
+	else:
+		figure_texture.position = Vector2.ZERO

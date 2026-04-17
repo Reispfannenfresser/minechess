@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bd1dhfcwwdjye"]
 
-[ext_resource type="Script" uid="uid://60cbx7aojkdc" path="res://scenes/promotion_screen.gd" id="1_j2x2x"]
+[ext_resource type="Script" uid="uid://60cbx7aojkdc" path="res://scenes/screens/promotion_screen.gd" id="1_j2x2x"]
 [ext_resource type="Texture2D" uid="uid://5iafexkxurhw" path="res://sprites/figure_queen.png" id="2_wpaw1"]
 [ext_resource type="Texture2D" uid="uid://bo0164vfcwtou" path="res://sprites/figure_rook.png" id="3_j2x2x"]
 [ext_resource type="Texture2D" uid="uid://chp3qi423cv1g" path="res://sprites/figure_bishop.png" id="4_slxci"]

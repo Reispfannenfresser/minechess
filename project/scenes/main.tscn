@@ -1,35 +1,33 @@
-[gd_scene load_steps=11 format=3 uid="uid://qwxbl6xgh334"]
+[gd_scene load_steps=20 format=3 uid="uid://qwxbl6xgh334"]
 
-[ext_resource type="Script" uid="uid://b1u5pdrgswfay" path="res://scenes/session_manager.gd" id="1_0wfyh"]
-[ext_resource type="Script" uid="uid://bs8hwgsyy6auo" path="res://scenes/smart_splitter.gd" id="1_sugp2"]
-[ext_resource type="Script" uid="uid://bmocbbnsxfg5l" path="res://scenes/smart_aspect_ratio_container.gd" id="2_jyhfs"]
+[ext_resource type="Script" uid="uid://b1u5pdrgswfay" path="res://scripts/session_manager.gd" id="1_0wfyh"]
+[ext_resource type="Script" uid="uid://bs8hwgsyy6auo" path="res://scripts/ui/layout/smart_split_container.gd" id="1_sugp2"]
 [ext_resource type="PackedScene" uid="uid://dmbltuabm4mpu" path="res://scenes/chess_board.tscn" id="2_sugp2"]
-[ext_resource type="Script" uid="uid://crf0yos2pahx8" path="res://scenes/smart_v_box_container.gd" id="5_tefeu"]
+[ext_resource type="Script" uid="uid://ff2e3cq1xcry" path="res://scripts/ui/layout/smart_box_container.gd" id="4_tbgi4"]
+[ext_resource type="Script" uid="uid://d0fylfn0b52nx" path="res://scripts/ui/layout/smart_control.gd" id="5_ya4ey"]
 [ext_resource type="Texture2D" uid="uid://dfj6yjlfmne44" path="res://sprites/reseed.png" id="6_o6xl0"]
-[ext_resource type="Script" uid="uid://bnd8du4ueleq8" path="res://scenes/range_label.gd" id="6_tipki"]
+[ext_resource type="Script" uid="uid://bnd8du4ueleq8" path="res://scripts/ui/range_label.gd" id="6_tipki"]
+[ext_resource type="Script" uid="uid://b6ngg6nnjx82o" path="res://scripts/ui/settings/mine_count_slider.gd" id="6_ya4ey"]
 [ext_resource type="Texture2D" uid="uid://brpbjts43xutg" path="res://sprites/unlocked.png" id="8_85g3d"]
-[ext_resource type="Script" uid="uid://dip3qrxtykptu" path="res://scenes/texture_toggle.gd" id="9_ya4ey"]
+[ext_resource type="Script" uid="uid://iphfpcjkxoho" path="res://scripts/ui/settings/mine_regeneration_button.gd" id="8_a8y0u"]
+[ext_resource type="Script" uid="uid://cyt34jklwxx44" path="res://scripts/ui/settings/king_can_defuse_button.gd" id="8_eb6dy"]
+[ext_resource type="Script" uid="uid://bgmv8fivagxsh" path="res://scripts/ui/settings/large_explosions_button.gd" id="8_trceg"]
 [ext_resource type="Texture2D" uid="uid://c2erlnm05oiuq" path="res://sprites/locked.png" id="10_eb6dy"]
+[ext_resource type="Script" uid="uid://bbmhes27vnjxa" path="res://scripts/ui/settings/seed_line_edit.gd" id="11_jkv2x"]
+[ext_resource type="Script" uid="uid://bmw8qr0wl4lme" path="res://scripts/ui/settings/random_seed_button.gd" id="12_jbj1t"]
+[ext_resource type="Script" uid="uid://dme1akkf60lm5" path="res://scripts/ui/settings/seed_lock_button.gd" id="12_jkv2x"]
+[ext_resource type="Script" uid="uid://dw3qnab10xoo3" path="res://scripts/ui/board_controls/undo_button.gd" id="17_dp3eg"]
+[ext_resource type="Script" uid="uid://dd45t4t2ixy1m" path="res://scripts/ui/board_controls/restart_button.gd" id="17_muem4"]
+[ext_resource type="Script" uid="uid://mftvetragufk" path="res://scripts/ui/board_controls/redo_button.gd" id="18_0ld40"]
 
-[node name="Main" type="CanvasLayer"]
-
-[node name="SessionManager" type="Node" parent="." node_paths=PackedStringArray("chess_board", "screen_parent", "undo_button", "redo_button", "restart_button", "king_can_defuse_button", "large_explosions_button", "mine_regeneration_button", "mine_count_range", "seed_lock_toggle", "reseed_button", "seed_text")]
+[node name="Main" type="Node" node_paths=PackedStringArray("chess_board")]
 script = ExtResource("1_0wfyh")
-chess_board = NodePath("../SplitContainer/MarginContainer/AspectRatioContainer/ChessBoard")
-screen_parent = NodePath("..")
-undo_button = NodePath("../SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer2/UndoButton")
-redo_button = NodePath("../SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer2/RedoButton")
-restart_button = NodePath("../SplitContainer/MarginContainer2/VBoxContainer/Restart")
-king_can_defuse_button = NodePath("../SplitContainer/MarginContainer2/VBoxContainer/KingCanDefuseButton")
-large_explosions_button = NodePath("../SplitContainer/MarginContainer2/VBoxContainer/LargeExplosionsButton")
-mine_regeneration_button = NodePath("../SplitContainer/MarginContainer2/VBoxContainer/MineRegenerationButton")
-mine_count_range = NodePath("../SplitContainer/MarginContainer2/VBoxContainer/MineCountBox/MineCountSlider")
-seed_lock_toggle = NodePath("../SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer/LockContainer/LockButton")
-reseed_button = NodePath("../SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer/ReseedContainer/ReseedButton")
-seed_text = NodePath("../SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer/Seed")
+chess_board = NodePath("CanvasLayer/SplitContainer/AspectRatioContainer/MarginContainer/ChessBoard")
 metadata/_custom_type_script = "uid://b1u5pdrgswfay"
 
-[node name="SplitContainer" type="SplitContainer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SplitContainer" type="SplitContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -38,48 +36,53 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_behavior_recursive = 2
-split_offset = 79
 dragging_enabled = false
 dragger_visibility = 2
 script = ExtResource("1_sugp2")
+split_ratio = 0.7
 
-[node name="MarginContainer" type="MarginContainer" parent="SplitContainer"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/SplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="SplitContainer/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/SplitContainer/AspectRatioContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="ChessBoard" parent="CanvasLayer/SplitContainer/AspectRatioContainer/MarginContainer" node_paths=PackedStringArray("screen_parent") instance=ExtResource("2_sugp2")]
+layout_mode = 2
+screen_parent = NodePath("..")
+
+[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/SplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("2_jyhfs")
-inline_alignment = 2
+alignment = 1
+vertical = true
+script = ExtResource("4_tbgi4")
+_landscape_vertical = true
+_portrait_vertical = false
 
-[node name="ChessBoard" parent="SplitContainer/MarginContainer/AspectRatioContainer" instance=ExtResource("2_sugp2")]
-layout_mode = 2
-
-[node name="MarginContainer2" type="MarginContainer" parent="SplitContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SplitContainer/MarginContainer2"]
+[node name="SettingContainer" type="VBoxContainer" parent="CanvasLayer/SplitContainer/BoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
-size_flags_vertical = 6
-alignment = 2
-script = ExtResource("5_tefeu")
+size_flags_vertical = 4
+alignment = 1
+script = ExtResource("5_ya4ey")
+_landscape_size_flags_horizontal = 4
+_landscape_size_flags_vertical = 8
+_portrait_size_flags_horizontal = 8
+_portrait_size_flags_vertical = 4
 
-[node name="MineCountBox" type="HBoxContainer" parent="SplitContainer/MarginContainer2/VBoxContainer"]
+[node name="MineCountBox" type="HBoxContainer" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer"]
 layout_mode = 2
+tooltip_text = "determines how many mines are placed on the board"
 
-[node name="Label" type="Label" parent="SplitContainer/MarginContainer2/VBoxContainer/MineCountBox"]
+[node name="Label" type="Label" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/MineCountBox"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -87,19 +90,22 @@ text = "Mines:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="MineCountSlider" type="HSlider" parent="SplitContainer/MarginContainer2/VBoxContainer/MineCountBox"]
+[node name="MineCountSlider" type="HSlider" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/MineCountBox" node_paths=PackedStringArray("_session_manager")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-tooltip_text = "Determines how many mines are placed on the board."
+tooltip_text = "determines how many mines are placed on the board"
+focus_mode = 0
 max_value = 32.0
 value = 6.0
 rounded = true
 tick_count = 5
 ticks_on_borders = true
 ticks_position = 3
+script = ExtResource("6_ya4ey")
+_session_manager = NodePath("../../../../../..")
 
-[node name="MineCountLabel" type="Label" parent="SplitContainer/MarginContainer2/VBoxContainer/MineCountBox" node_paths=PackedStringArray("_range")]
+[node name="MineCountLabel" type="Label" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/MineCountBox" node_paths=PackedStringArray("_range")]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -109,38 +115,47 @@ vertical_alignment = 1
 script = ExtResource("6_tipki")
 _range = NodePath("../MineCountSlider")
 
-[node name="MineRegenerationButton" type="CheckButton" parent="SplitContainer/MarginContainer2/VBoxContainer"]
+[node name="MineRegenerationButton" type="CheckButton" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer" node_paths=PackedStringArray("_session_manager")]
 layout_mode = 2
 tooltip_text = "makes mines regenerate to an empty space
 whenever they are blown up or defused"
 focus_mode = 0
 button_pressed = true
 text = "Mine regeneration:"
+flat = true
+script = ExtResource("8_a8y0u")
+_session_manager = NodePath("../../../../..")
 
-[node name="LargeExplosionsButton" type="CheckButton" parent="SplitContainer/MarginContainer2/VBoxContainer"]
+[node name="LargeExplosionsButton" type="CheckButton" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer" node_paths=PackedStringArray("_session_manager")]
 layout_mode = 2
 tooltip_text = "makes explosions affect a 3x3 area
 instead of just a single tile"
 focus_mode = 0
 button_pressed = true
 text = "Large explosions:"
+flat = true
+script = ExtResource("8_trceg")
+_session_manager = NodePath("../../../../..")
 
-[node name="KingCanDefuseButton" type="CheckButton" parent="SplitContainer/MarginContainer2/VBoxContainer"]
+[node name="KingCanDefuseButton" type="CheckButton" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer" node_paths=PackedStringArray("_session_manager")]
 layout_mode = 2
 tooltip_text = "allows the kings to defuse any mine they step on
 (This doesn't protect them from large explosions.)"
 focus_mode = 0
 button_pressed = true
 text = "King can defuse:"
+flat = true
+script = ExtResource("8_eb6dy")
+_session_manager = NodePath("../../../../..")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SplitContainer/MarginContainer2/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/HBoxContainer"]
 layout_mode = 2
 text = "Seed:"
 
-[node name="Seed" type="LineEdit" parent="SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer"]
+[node name="Seed" type="LineEdit" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/HBoxContainer" node_paths=PackedStringArray("_session_manager")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "determines where the mines are
@@ -153,17 +168,21 @@ max_length = 10
 emoji_menu_enabled = false
 virtual_keyboard_type = 2
 middle_mouse_paste_enabled = false
+script = ExtResource("11_jkv2x")
+_session_manager = NodePath("../../../../../..")
 
-[node name="ReseedContainer" type="AspectRatioContainer" parent="SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer"]
+[node name="ReseedContainer" type="AspectRatioContainer" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="ReseedButton" type="Button" parent="SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer/ReseedContainer"]
+[node name="ReseedButton" type="Button" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/HBoxContainer/ReseedContainer" node_paths=PackedStringArray("_session_manager")]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 tooltip_text = "randomize the seed"
 focus_mode = 0
+script = ExtResource("12_jbj1t")
+_session_manager = NodePath("../../../../../../..")
 
-[node name="TextureRect" type="TextureRect" parent="SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer/ReseedContainer/ReseedButton"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/HBoxContainer/ReseedContainer/ReseedButton"]
 layout_mode = 0
 offset_right = 32.0
 offset_bottom = 32.0
@@ -173,50 +192,69 @@ texture = ExtResource("6_o6xl0")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="LockContainer" type="AspectRatioContainer" parent="SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer"]
+[node name="LockContainer" type="AspectRatioContainer" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="LockButton" type="Button" parent="SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer/LockContainer"]
+[node name="LockButton" type="Button" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/HBoxContainer/LockContainer" node_paths=PackedStringArray("_session_manager", "_texture_rect")]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-tooltip_text = "Locking prevents the seed from changing after a restart."
+tooltip_text = "locking prevents the seed from automatically changing after a restart."
 focus_mode = 0
 toggle_mode = true
+script = ExtResource("12_jkv2x")
+_session_manager = NodePath("../../../../../../..")
+_texture_rect = NodePath("TextureRect")
+on_texture = ExtResource("10_eb6dy")
+off_texture = ExtResource("8_85g3d")
 
-[node name="TextureRect" type="TextureRect" parent="SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer/LockContainer/LockButton" node_paths=PackedStringArray("button")]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/SplitContainer/BoxContainer/SettingContainer/HBoxContainer/LockContainer/LockButton"]
 layout_mode = 0
 offset_right = 32.0
 offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("8_85g3d")
 expand_mode = 1
 stretch_mode = 4
-script = ExtResource("9_ya4ey")
-button = NodePath("..")
-on_texture = ExtResource("10_eb6dy")
-off_texture = ExtResource("8_85g3d")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="SplitContainer/MarginContainer2/VBoxContainer"]
+[node name="ButtonContainer" type="VBoxContainer" parent="CanvasLayer/SplitContainer/BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+alignment = 1
+script = ExtResource("5_ya4ey")
+_landscape_size_flags_horizontal = 4
+_landscape_size_flags_vertical = 0
+_portrait_size_flags_horizontal = 0
+_portrait_size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/SplitContainer/BoxContainer/ButtonContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="UndoButton" type="Button" parent="SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer2"]
+[node name="UndoButton" type="Button" parent="CanvasLayer/SplitContainer/BoxContainer/ButtonContainer/HBoxContainer" node_paths=PackedStringArray("_chess_board")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "takes back the last move"
 focus_mode = 0
 text = "Undo"
+script = ExtResource("17_dp3eg")
+_chess_board = NodePath("../../../../AspectRatioContainer/MarginContainer/ChessBoard")
 
-[node name="RedoButton" type="Button" parent="SplitContainer/MarginContainer2/VBoxContainer/HBoxContainer2"]
+[node name="RedoButton" type="Button" parent="CanvasLayer/SplitContainer/BoxContainer/ButtonContainer/HBoxContainer" node_paths=PackedStringArray("_chess_board")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "plays the last taken back move again"
 focus_mode = 0
 text = "Redo"
+script = ExtResource("18_0ld40")
+_chess_board = NodePath("../../../../AspectRatioContainer/MarginContainer/ChessBoard")
 
-[node name="Restart" type="Button" parent="SplitContainer/MarginContainer2/VBoxContainer"]
+[node name="Restart" type="Button" parent="CanvasLayer/SplitContainer/BoxContainer/ButtonContainer" node_paths=PackedStringArray("_chess_board")]
 layout_mode = 2
 tooltip_text = "abort the current game and start a new one"
 focus_mode = 0
 text = "Restart"
+script = ExtResource("17_muem4")
+_chess_board = NodePath("../../../AspectRatioContainer/MarginContainer/ChessBoard")
+
+[node name="Camera2D" type="Camera2D" parent="."]

@@ -1,12 +1,15 @@
-[gd_resource type="Resource" script_class="Figureset" load_steps=19 format=3 uid="uid://bhosbwlt1byfu"]
+[gd_resource type="Resource" script_class="Figureset" load_steps=25 format=3 uid="uid://bhosbwlt1byfu"]
 
 [ext_resource type="Texture2D" uid="uid://chp3qi423cv1g" path="res://sprites/figure_bishop.png" id="1_6ff4l"]
+[ext_resource type="Texture2D" uid="uid://qjp0wmixdb03" path="res://sprites/figure_bishop_shadow.png" id="2_e0lkp"]
 [ext_resource type="Texture2D" uid="uid://u00o4llpmjhu" path="res://sprites/indicator_capture.png" id="2_l2g3h"]
 [ext_resource type="Texture2D" uid="uid://csq70ap6p1n14" path="res://sprites/figure_king.png" id="2_ln8f4"]
 [ext_resource type="Texture2D" uid="uid://basgulv2qynkc" path="res://sprites/figure_knight.png" id="3_l2g3h"]
 [ext_resource type="Texture2D" uid="uid://cjuxs57woe02f" path="res://sprites/mine_count__one.png" id="4_vnoir"]
 [ext_resource type="Texture2D" uid="uid://djw3xclrn42mq" path="res://sprites/mine_count__two.png" id="5_qgn1c"]
+[ext_resource type="Texture2D" uid="uid://1to6yv5psuao" path="res://sprites/figure_king_shadow.png" id="5_v6w1l"]
 [ext_resource type="Texture2D" uid="uid://da0yngkbpsd4o" path="res://sprites/mine_count__three.png" id="6_1ukfr"]
+[ext_resource type="Texture2D" uid="uid://drkk1ydfnqtum" path="res://sprites/figure_knight_shadow.png" id="7_6dg4x"]
 [ext_resource type="Texture2D" uid="uid://dwp3k2lvheh38" path="res://sprites/mine_count__four.png" id="7_aqt4g"]
 [ext_resource type="Texture2D" uid="uid://cpff36qh74poo" path="res://sprites/mine_count__five.png" id="8_e0lkp"]
 [ext_resource type="Texture2D" uid="uid://dvwu1wju35te7" path="res://sprites/mine_count__six.png" id="9_v6w1l"]
@@ -18,15 +21,24 @@
 [ext_resource type="Texture2D" uid="uid://bo0164vfcwtou" path="res://sprites/figure_rook.png" id="15_wwnyq"]
 [ext_resource type="Script" uid="uid://dgbvwbp8nrysw" path="res://resources/iconset.gd" id="16_muke8"]
 [ext_resource type="Texture2D" uid="uid://c2s4ldf3l5n4" path="res://sprites/indicator_select.png" id="17_p63g5"]
+[ext_resource type="Texture2D" uid="uid://c6koal5wiqbk0" path="res://sprites/figure_pawn_shadow.png" id="18_onlym"]
+[ext_resource type="Texture2D" uid="uid://cnwb6ha22idh1" path="res://sprites/figure_queen_shadow.png" id="20_fkhf2"]
+[ext_resource type="Texture2D" uid="uid://ci4035fyn1x3" path="res://sprites/figure_rook_shadow.png" id="22_8t5bg"]
 
 [resource]
 script = ExtResource("16_muke8")
 pawn = ExtResource("13_8t5bg")
+pawn_shadow = ExtResource("18_onlym")
 rook = ExtResource("15_wwnyq")
+rook_shadow = ExtResource("22_8t5bg")
 knight = ExtResource("3_l2g3h")
+knight_shadow = ExtResource("7_6dg4x")
 bishop = ExtResource("1_6ff4l")
+bishop_shadow = ExtResource("2_e0lkp")
 queen = ExtResource("14_wfoi6")
+queen_shadow = ExtResource("20_fkhf2")
 king = ExtResource("2_ln8f4")
+king_shadow = ExtResource("5_v6w1l")
 mine_1 = ExtResource("4_vnoir")
 mine_2 = ExtResource("5_qgn1c")
 mine_3 = ExtResource("6_1ukfr")
