@@ -21,6 +21,7 @@ var figure: MineChessFigure = null
 
 var _is_movement_target: bool = false
 var _can_move: bool = false
+var _is_selected: bool = false
 
 var _board: ChessBoard
 
@@ -29,14 +30,13 @@ var _chess_position: MineChessPosition
 var _is_in_check: bool = false
 
 var _is_holding: bool = false
+var _was_selected: bool = false
 var _is_dragging: bool = false
 var _hold_duration: float = 0
 
-signal tile_clicked(tile: ChessTile)
-
-signal tile_dragged(tile: ChessTile)
-
-signal tile_dropped(tile: ChessTile, to: MineChessPosition)
+signal selection_requested(tile: ChessTile)
+signal selection_clear_requested
+signal movement_requested(position: MineChessPosition)
 
 static func create(board: ChessBoard, chess_position: MineChessPosition)-> ChessTile:
 	var new_tile: ChessTile = self_scene.instantiate()
@@ -54,12 +54,16 @@ static func create(board: ChessBoard, chess_position: MineChessPosition)-> Chess
 
 func select()-> void:
 	indicator_texture.texture = _board.iconset.select
+	shadow_texture.visible = true
+	_is_selected = true;
 
 func unselect()-> void:
 	if(_is_in_check):
 		indicator_texture.texture = _board.iconset.capture
 	else:
 		indicator_texture.texture = null
+	shadow_texture.visible = false
+	_is_selected = false
 
 func show_movement_indicator()-> void:
 	_is_movement_target = true
@@ -75,14 +79,14 @@ func hide_movement_indicator()-> void:
 func is_movement_target()-> bool:
 	return _is_movement_target
 
-func can_move()-> bool:
-	return _can_move
-
 func allow_movement()-> void:
 	_can_move = true
 
 func disallow_movement()-> void:
 	_can_move = false
+
+func can_move()-> bool:
+	return _can_move
 
 func get_chess_position()-> MineChessPosition:
 	return _chess_position
@@ -143,49 +147,80 @@ func set_in_check()-> void:
 
 func clear()-> void:
 	figure = null
+	_is_selected = false
+	_was_selected = false
 	_can_move = false
+	_is_movement_target = false
 	figure_texture.texture = null
+	shadow_texture.texture = null
 	indicator_texture.texture = null
 	mine_count_texture.texture = null
 	_is_in_check = false
+	_is_holding = false
+	_hold_duration = 0
+	_is_dragging = false
 
 func _on_button_down()-> void:
-	if(!_can_move):
-		tile_clicked.emit(self)
-		return
 	_hold_duration = 0
 	_is_holding = true
+	_was_selected = _is_selected
 
 func _on_button_up()-> void:
-	if(_can_move):
-		if(_is_dragging):
-			var offset: Vector2 = figure_texture.global_position - board_texture.global_position
-			offset = round(offset / figure_texture.size)
-			offset.y *= -1
-			shadow_texture.visible = false;
-			var drop_position: Vector2i = Vector2i(_chess_position.file + int(offset.x), _chess_position.rank + int(offset.y))
-			if(drop_position.x >= 0 && drop_position.x <= 7 && drop_position.y >= 0 && drop_position.y <= 7):
-				tile_dropped.emit(self, MineChessPosition.create(drop_position.x, drop_position.y))
-			else:
-				tile_dropped.emit(self, null)
-		else:
-			tile_clicked.emit(self)
-
+	_hold_duration = 0
 	_is_holding = false
-	_is_dragging = false
-	figure_texture.top_level = false
+	
+	if(_is_dragging):
+		_stop_dragging()
+		return
+	
+	if(_is_movement_target):
+		movement_requested.emit(_chess_position)
+		return
+	
+	if(!_can_move):
+		selection_clear_requested.emit()
+		return
+
+	if(_was_selected):
+		selection_clear_requested.emit()
+	else:
+		selection_requested.emit(self)
+
 
 func _process(delta: float)-> void:
 	if(_is_holding):
-		if(!_is_dragging && _hold_duration >= 0.1):
-			_is_dragging = true
-			figure_texture.top_level = true
-			tile_dragged.emit(self)
-			shadow_texture.visible = true;
-
-		if(_is_dragging):
-			figure_texture.position = get_global_mouse_position() - (figure_texture.size * 0.5)
-
+		if(_can_move && !_is_dragging && _hold_duration >= 0.1):
+			_start_dragging()
 		_hold_duration += delta
+	if(_is_dragging):
+		figure_texture.position = get_global_mouse_position() - (figure_texture.size * 0.5)
+
+func _start_dragging()-> void:
+	_is_dragging = true
+	figure_texture.top_level = true
+	selection_requested.emit(self)
+
+func _stop_dragging()-> void:
+	var drop_position: Vector2i = _get_drop_position()
+	
+	_is_dragging = false
+	figure_texture.top_level = false
+	figure_texture.position = Vector2.ZERO
+	
+	if(drop_position.x == _chess_position.file && drop_position.y == _chess_position.rank):
+		if(_was_selected):
+			selection_clear_requested.emit()
+		else:
+			selection_requested.emit(self)
+		return
+	
+	if(drop_position.x >= 0 && drop_position.x <= 7 && drop_position.y >= 0 && drop_position.y <= 7):
+		movement_requested.emit(MineChessPosition.create(drop_position.x, drop_position.y))
 	else:
-		figure_texture.position = Vector2.ZERO
+		selection_clear_requested.emit()
+
+func _get_drop_position()-> Vector2i:
+	var offset: Vector2 = figure_texture.global_position - board_texture.global_position
+	offset = round(offset / figure_texture.size)
+	offset.y *= -1
+	return Vector2i(_chess_position.file + int(offset.x), _chess_position.rank + int(offset.y))

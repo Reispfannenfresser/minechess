@@ -37,13 +37,16 @@ func _create_tiles()-> void:
 		for file: int in 8:
 			var tile_position: MineChessPosition = MineChessPosition.create(file, 7-rank)
 			var new_tile: ChessTile = ChessTile.create(self, tile_position)
-			new_tile.tile_clicked.connect(_on_tile_clicked)
-			new_tile.tile_dragged.connect(_on_tile_dragged)
-			new_tile.tile_dropped.connect(_on_tile_dropped)
+			new_tile.selection_clear_requested.connect(_on_tile_selection_clear_requested)
+			new_tile.selection_requested.connect(_on_tile_selection_requested)
+			new_tile.movement_requested.connect(_on_tile_movement_requested)
 			grid.add_child(new_tile)
 			_tiles[tile_position.index] = new_tile
 
 func _try_move(from: MineChessPosition, to: MineChessPosition)->bool:
+	if(!_tiles[to.index].is_movement_target()):
+		return false
+	
 	var figure: MineChessFigure = _game.get_figuredata(from)
 	if(figure != null && figure.figure_type == MineChessFigure.PAWN && (to.rank == MineChessPosition.RANK_1 || to.rank == MineChessPosition.RANK_8)):
 		var promotion_screen: PromotionScreen = PromotionScreen.create()
@@ -57,20 +60,31 @@ func _try_move(from: MineChessPosition, to: MineChessPosition)->bool:
 		update_figures()
 		_selected_tile = null
 		return true
+	_clear_selection()
 	return false
 
 func _on_promotion_type_selected(promotion_type: MineChessFigure.FigureType)-> void:
 	_promotion_type = promotion_type
 
-func _on_tile_clicked(tile: ChessTile)-> void:
-	if(_selected_tile != null && tile.is_movement_target() && await _try_move(_selected_tile.get_chess_position(), tile.get_chess_position())):
+func _on_tile_movement_requested(to: MineChessPosition)-> void:
+	print("Movement requested to {0}, {1}".format([to.file, to.rank]))
+	if(_selected_tile == null):
 		return
+	var from: MineChessPosition = _selected_tile.get_chess_position()
+	_try_move(from, to)
 
+func _on_tile_selection_clear_requested()-> void:
+	_clear_selection()
+
+func _on_tile_selection_requested(tile: ChessTile)-> void:
+	print("Selection requested at {0}, {1}".format([tile.get_chess_position().file, tile.get_chess_position().rank]))
+	_clear_selection()
 	var figure_data: MineChessFigure = _game.get_figuredata(tile._chess_position)
 	if(figure_data != null && figure_data.color == _game.get_current_player()):
-		_select(tile)
-	else:
-		_clear_selection()
+		tile.select()
+		_selected_tile = tile
+		for move_position: MineChessPosition in _game.get_legal_moves(tile.get_chess_position()):
+			_tiles[move_position.index].show_movement_indicator()
 
 func _clear_selection()-> void:
 	if(_selected_tile == null):
@@ -79,27 +93,6 @@ func _clear_selection()-> void:
 		_tiles[move_position.index].hide_movement_indicator()
 	_selected_tile.unselect()
 	_selected_tile = null
-
-func _select(tile: ChessTile)-> void:
-	if(_selected_tile != null):
-		_clear_selection()
-	for move_position: MineChessPosition in _game.get_legal_moves(tile.get_chess_position()):
-		_tiles[move_position.index].show_movement_indicator()
-	tile.select()
-	_selected_tile = tile
-
-func _on_tile_dragged(tile: ChessTile)-> void:
-	var figure_data: MineChessFigure = _game.get_figuredata(tile._chess_position)
-	if(figure_data != null && figure_data.color == _game.get_current_player()):
-		_select(tile)
-	else:
-		_clear_selection()
-
-func _on_tile_dropped(tile:ChessTile, to: MineChessPosition)-> void:
-	if(to != null && _tiles[to.get_index()].is_movement_target() && await _try_move(tile._chess_position, to)):
-		return
-	if(tile.get_chess_position().index != to.index):
-		_clear_selection()
 
 func prepare(mine_count: int, king_can_defuse: bool, large_explosions: bool, mine_regeneration: bool, game_seed: int)-> void:
 	if (_game != null):
@@ -129,6 +122,7 @@ func update_figures()-> void:
 	figures_updated.emit()
 
 func _clear()-> void:
+	_clear_selection()
 	for tile_index: int in _tiles:
 		var tile: ChessTile = _tiles[tile_index]
 		tile.clear()
